@@ -1,0 +1,1 @@
+All the raw files are initially converted to Excel format. Once converted, they are downloaded to a local folder. Subsequently, they are uploaded to the Jupyter directory for further processing, each file being associated with a specific question and named accordingly, such as dataset_Q1, dataset_Q2, and so forth
