@@ -1,0 +1,596 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# Name: Kashish Shah  
+# Student ID: 200545460  
+# Course: Data Programming  
+# Course Code: BDAT 1004  
+# Problem Set: 3  
+# Prof: Ethan Davis
+
+# # Question 1
+# OCCUPATION
+
+# In[1]:
+
+
+import pandas as pd
+
+# Read data from URL into a DataFrame
+url = "https://raw.githubusercontent.com/justmarkham/DAT8/master/data/u.user"
+data = pd.read_csv(url, sep='|')
+
+# Write DataFrame to Excel file
+excel_file = "user_data.xlsx"
+data.to_excel(excel_file, index=False)
+
+print("Data has been successfully written to", excel_file)
+
+
+# In[2]:
+
+
+import shutil
+
+# Source file path
+source_file = "user_data.xlsx"
+
+# Destination directory where you want to save the file
+destination_directory = "C:\\Users\\kashi\\OneDrive\\Desktop\\Resume"
+
+# Copy the file to the destination directory
+shutil.copy(source_file, destination_directory)
+
+print("File has been successfully copied to", destination_directory)
+
+
+# In[3]:
+
+
+import pandas as pd
+
+# Step 3: Import the dataset
+users = pd.read_excel("Dataset_Q1.xlsx")
+
+# Step 4: Discover the mean age per occupation
+print("Step 4: Mean age per occupation")
+mean_age_per_occupation = users.groupby('occupation')['age'].mean()
+print(mean_age_per_occupation)
+print("\n")
+
+# Step 5: Discover the Male ratio per occupation and sort it from the most to the least
+print("Step 5: Male ratio per occupation (from most to least)")
+male_ratio_per_occupation = users[users['gender'] == 'M'].groupby('occupation').size() / users.groupby('occupation').size()
+male_ratio_per_occupation = male_ratio_per_occupation.sort_values(ascending=False)
+print(male_ratio_per_occupation)
+print("\n")
+
+# Step 6: For each occupation, calculate the minimum and maximum ages
+print("Step 6: Minimum and maximum ages per occupation")
+min_max_age_per_occupation = users.groupby('occupation')['age'].agg(['min', 'max'])
+print(min_max_age_per_occupation)
+print("\n")
+
+# Step 7: For each combination of occupation and sex, calculate the mean age
+print("Step 7: Mean age per occupation and sex")
+mean_age_per_occupation_sex = users.groupby(['occupation', 'gender'])['age'].mean()
+print(mean_age_per_occupation_sex)
+print("\n")
+
+# Step 8: For each occupation present the percentage of women and men
+print("Step 8: Percentage of women and men per occupation")
+total_gender_per_occupation = users.groupby('occupation')['gender'].value_counts()
+percentage_gender_per_occupation = total_gender_per_occupation.groupby(level=0).apply(lambda x: 100 * x / float(x.sum()))
+print(percentage_gender_per_occupation)
+
+
+# # Question 2
+# EURO TEAMS
+
+# In[4]:
+
+
+import pandas as pd
+
+# Read data from URL into a DataFrame
+url = "https://raw.githubusercontent.com/guipsamora/pandas_exercises/master/02_Filtering_%26_Sorting/Euro12/Euro_2012_stats_TEAM.csv"
+data = pd.read_csv(url, sep='|')
+
+# Write DataFrame to Excel file
+excel_file = "user_data1.xlsx"
+data.to_excel(excel_file, index=False)
+
+print("Data has been successfully written to", excel_file)
+
+
+# In[5]:
+
+
+import shutil
+
+# Source file path
+source_file = "user_data1.xlsx"
+
+# Destination directory where you want to save the file
+destination_directory = "C:\\Users\\kashi\\OneDrive\\Desktop\\Resume"
+
+# Copy the file to the destination directory
+shutil.copy(source_file, destination_directory)
+
+print("File has been successfully copied to", destination_directory)
+
+
+# In[6]:
+
+
+import pandas as pd
+
+# Step 3: Import the dataset and assign it to a variable called euro12
+euro12 = pd.read_csv("Dataset_Q2.csv")
+
+# Step 4: Select only the Goal column
+goals = euro12['Goals']
+print("\nStep 4: Goals column")
+print(goals)
+
+# Step 5: How many teams participated in the Euro2012?
+num_teams = euro12['Team'].nunique()
+print("\nStep 5: Number of teams participated in Euro2012")
+print(num_teams)
+
+# Step 6: What is the number of columns in the dataset?
+num_columns = euro12.shape[1]
+print("\nStep 6: Number of columns in the dataset")
+print(num_columns)
+
+# Step 7: View only the columns Team, Yellow Cards and Red Cards and assign them to a dataframe called discipline
+discipline = euro12[['Team', 'Yellow Cards', 'Red Cards']]
+print("\nStep 7: Discipline dataframe")
+print(discipline)
+
+# Step 8: Sort the teams by Red Cards, then by Yellow Cards
+discipline_sorted = discipline.sort_values(by=['Red Cards', 'Yellow Cards'], ascending=False)
+print("\nStep 8: Discipline sorted by Red Cards and Yellow Cards")
+print(discipline_sorted)
+
+# Step 9: Calculate the mean Yellow Cards given per Team
+mean_yellow_cards = discipline['Yellow Cards'].mean()
+print("\nStep 9: Mean Yellow Cards per Team")
+print(mean_yellow_cards)
+
+# Step 10: Filter teams that scored more than 6 goals
+high_scorers = euro12[euro12['Goals'] > 6]
+print("\nStep 10: Teams with more than 6 goals")
+print(high_scorers)
+
+# Step 11: Select the teams that start with G
+teams_starting_with_G = euro12[euro12['Team'].str.startswith('G')]
+print("\nStep 11: Teams starting with G")
+print(teams_starting_with_G)
+
+# Step 12: Select the first 7 columns
+first_seven_columns = euro12.iloc[:, :7]
+print("\nStep 12: First 7 columns")
+print(first_seven_columns)
+
+# Step 13: Select all columns except the last 3
+all_except_last_three = euro12.iloc[:, :-3]
+print("\nStep 13: All columns except the last 3")
+print(all_except_last_three)
+
+# Step 14: Present only the Shooting Accuracy from England, Italy and Russia
+shooting_accuracy = euro12.loc[euro12['Team'].isin(['England', 'Italy', 'Russia']), ['Team', 'Shooting Accuracy']]
+print("\nStep 14: Shooting Accuracy of England, Italy, and Russia")
+print(shooting_accuracy)
+
+
+# # Question 3
+# HOUSING 
+
+# In[7]:
+
+
+import pandas as pd
+import numpy as np
+
+# Step 1: Import the necessary libraries
+print("Step 1: Libraries imported successfully.")
+
+# Step 2: Create 3 different Series
+series1 = pd.Series(np.random.randint(1, 5, size=100))
+series2 = pd.Series(np.random.randint(1, 4, size=100))
+series3 = pd.Series(np.random.randint(10000, 30001, size=100))
+print("\nStep 2: 3 Series created successfully.")
+print("Series 1:")
+print(series1)
+print("\nSeries 2:")
+print(series2)
+print("\nSeries 3:")
+print(series3)
+
+# Step 3: Create a DataFrame by joining the Series by column
+df = pd.DataFrame({'bedrs': series1, 'bathrs': series2, 'price_sqr_meter': series3})
+print("\nStep 3: DataFrame created successfully.")
+print("\nDataFrame:")
+print(df)
+
+# Step 4: Change the name of the columns
+df.columns = ['bedrs', 'bathrs', 'price_sqr_meter']
+print("\nStep 4: Columns renamed successfully.")
+print("\nDataFrame with renamed columns:")
+print(df)
+
+# Step 5: Create a one-column DataFrame with the values of the 3 Series and assign it to 'bigcolumn'
+bigcolumn = pd.concat([series1, series2, series3], axis=0, ignore_index=True)
+print("\nStep 5: One-column DataFrame created successfully.")
+print("\nOne-column DataFrame:")
+print(bigcolumn)
+
+# Step 6: Check if it is going only until index 99
+print("\nStep 6: Is it true that it is going only until index 99?")
+print(bigcolumn.index.max() == 99)
+
+# Step 7: Reindex the DataFrame so it goes from 0 to 299
+df = df.reindex(range(300))
+print("\nStep 7: DataFrame reindexed successfully.")
+print("\nDataFrame after reindexing:")
+print(df)
+
+
+# # Question 4
+# WIND STATISTICS
+
+# In[8]:
+
+
+import pandas as pd
+
+# Step 2: Import the dataset
+data = pd.read_csv("wind.txt", sep="\s+", parse_dates=[[0, 1, 2]])
+
+# Step 3: Replace the first 3 columns by a proper datetime index
+data.set_index('Yr_Mo_Dy', inplace=True)
+
+# Step 4: Create a function to fix year 2061 and apply it
+def fix_year(x):
+    year = x.year - 100 if x.year > 1989 else x.year
+    return pd.to_datetime(str(year) + '-' + str(x.month) + '-' + str(x.day))
+
+data.index = data.index.map(fix_year)
+
+# Step 5: Set the right dates as the index
+data.index = pd.to_datetime(data.index)
+
+# Step 6: Compute how many values are missing for each location over the entire record
+missing_values = data.isnull().sum()
+
+# Step 7: Compute how many non-missing values there are in total
+total_non_missing = data.notnull().sum().sum()
+
+# Step 8: Calculate the mean windspeeds of the windspeeds over all the locations and all the times
+mean_windspeed = data.stack().mean()
+
+# Step 9: Create loc_stats DataFrame and calculate min, max, mean, and standard deviation of windspeeds at each location
+loc_stats = data.describe(percentiles=[])
+
+# Step 10: Create day_stats DataFrame and calculate min, max, mean, and standard deviation of windspeeds for each day
+day_stats = pd.DataFrame()
+day_stats['min'] = data.min(axis=1)
+day_stats['max'] = data.max(axis=1)
+day_stats['mean'] = data.mean(axis=1)
+day_stats['std'] = data.std(axis=1)
+
+# Step 11: Find the average windspeed in January for each location
+january_avg = data[data.index.month == 1].mean()
+
+# Step 12: Downsample the record to a yearly frequency for each location
+yearly_mean = data.resample('Y').mean()
+
+# Step 13: Downsample the record to a monthly frequency for each location
+monthly_mean = data.resample('M').mean()
+
+# Step 14: Downsample the record to a weekly frequency for each location
+weekly_mean = data.resample('W').mean()
+
+# Step 15: Calculate min, max, mean, and std of windspeeds across all locations for each week for the first 52 weeks
+weekly_stats = data.resample('W').agg(['min', 'max', 'mean', 'std']).iloc[:52]
+
+# Displaying results
+print("Step 6: Missing values for each location:")
+print(missing_values)
+print("\nStep 7: Total non-missing values:", total_non_missing)
+print("\nStep 8: Mean windspeed over all locations and times:", mean_windspeed)
+print("\nStep 9: Summary statistics for each location:")
+print(loc_stats)
+print("\nStep 10: Summary statistics for each day:")
+print(day_stats)
+print("\nStep 11: Average windspeed in January for each location:")
+print(january_avg)
+print("\nStep 12: Yearly mean windspeed for each location:")
+print(yearly_mean)
+print("\nStep 13: Monthly mean windspeed for each location:")
+print(monthly_mean)
+print("\nStep 14: Weekly mean windspeed for each location:")
+print(weekly_mean)
+print("\nStep 15: Weekly statistics (min, max, mean, std) for the first 52 weeks:")
+print(weekly_stats)
+
+
+# # Question 5
+
+# In[9]:
+
+
+import pandas as pd
+
+# Read data from URL into a DataFrame
+url = "https://raw.githubusercontent.com/justmarkham/DAT8/master/data/chipotle.tsv"
+data = pd.read_csv(url, sep='|')
+
+# Write DataFrame to Excel file
+excel_file = "user_data2.xlsx"
+data.to_excel(excel_file, index=False)
+
+print("Data has been successfully written to", excel_file)
+
+
+# In[10]:
+
+
+import shutil
+
+# Source file path
+source_file = "user_data2.xlsx"
+
+# Destination directory where you want to save the file
+destination_directory = "C:\\Users\\kashi\\OneDrive\\Desktop\\Resume"
+
+# Copy the file to the destination directory
+shutil.copy(source_file, destination_directory)
+
+print("File has been successfully copied to", destination_directory)
+
+
+# In[11]:
+
+
+import pandas as pd
+
+# Step 2: Import the dataset
+chipo = pd.read_excel("Dataset_Q5.xlsx")
+
+# Step 3: Assign it to a variable called chipo
+chipo = pd.read_excel("Dataset_Q5.xlsx")
+
+# Step 4: See the first 10 entries
+print("Step 4: First 10 entries:")
+print(chipo.head(10))
+
+# Step 7: Print the name of all the columns
+print("\nStep 7: Name of all columns:")
+print(chipo.columns)
+
+# Step 5: What is the number of observations in the dataset?
+num_observations = len(chipo)
+
+# Step 6: What is the number of columns in the dataset?
+num_columns = len(chipo.columns)
+
+# Step 8: How is the dataset indexed?
+index_type = type(chipo.index)
+
+# Step 9: Which was the most-ordered item?
+most_ordered_item = chipo['item_name'].value_counts().idxmax()
+
+# Step 10: For the most-ordered item, how many items were ordered?
+most_ordered_item_count = chipo['item_name'].value_counts().max()
+
+# Step 11: What was the most ordered item in the choice_description column?
+most_ordered_choice = chipo['choice_description'].value_counts().idxmax()
+
+# Step 12: How many items were ordered in total?
+total_items_ordered = chipo['quantity'].sum()
+
+# Step 13: Turn the item price into a float
+chipo['item_price'] = chipo['item_price'].apply(lambda x: float(x.replace('$', '')) if isinstance(x, str) else x)
+
+# Check the item price type after conversion
+item_price_type_after = chipo['item_price'].dtype
+
+# Step 14: How much was the revenue for the period in the dataset?
+revenue = (chipo['quantity'] * chipo['item_price']).sum()
+
+# Step 15: How many orders were made in the period?
+num_orders = chipo['order_id'].nunique()
+
+# Step 16: What is the average revenue amount per order?
+average_revenue_per_order = revenue / num_orders
+
+# Step 17: How many different items are sold?
+num_unique_items_sold = chipo['item_name'].nunique()
+
+
+
+
+# Displaying results
+print("\nStep 5: Number of observations in the dataset:", num_observations)
+print("\nStep 6: Number of columns in the dataset:", num_columns)
+print("\nStep 8: Type of index:", index_type)
+print("\nStep 9: Most ordered item:", most_ordered_item)
+print("\nStep 10: Number of orders for the most ordered item:", most_ordered_item_count)
+print("\nStep 11: Most ordered item in the choice_description column:", most_ordered_choice)
+print("\nStep 12: Total items ordered:", total_items_ordered)
+print("\nStep 13: Item price type after conversion:", item_price_type_after)
+print("\nStep 14: Revenue for the period in the dataset:", revenue)
+print("\nStep 15: Number of orders made in the period:", num_orders)
+print("\nStep 16: Average revenue amount per order:", average_revenue_per_order)
+print("\nStep 17: Number of different items sold:", num_unique_items_sold)
+
+
+# # Question 6
+# LINE PLOT 
+
+# In[12]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Step 1: Import the dataset
+marriage_divorce_data = pd.read_csv("Dataset_Q6.csv")
+
+# Step 2: Plotting
+plt.figure(figsize=(10, 6))
+
+# Plot marriages per capita
+plt.plot(marriage_divorce_data['Year'], marriage_divorce_data['Marriages_per_1000'], label='Marriages per 1000')
+
+# Plot divorces per capita
+plt.plot(marriage_divorce_data['Year'], marriage_divorce_data['Divorces_per_1000'], label='Divorces per 1000')
+
+# Add labels and legend
+plt.xlabel('Year')
+plt.ylabel('Number per 1000')
+plt.title('Number of Marriages and Divorces per 1000 in the U.S. (1867-2014)')
+plt.legend()
+
+# Show plot
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+
+# # Question 7
+# VERTICAL BAR CHART
+
+# In[13]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Step 1: Import the dataset
+marriage_divorce_data = pd.read_csv("Dataset_Q6.csv")
+
+# Step 2: Filter the data for years 1900, 1950, and 2000
+years_of_interest = [1900, 1950, 2000]
+filtered_data = marriage_divorce_data[marriage_divorce_data['Year'].isin(years_of_interest)]
+
+# Step 3: Plotting
+plt.figure(figsize=(10, 6))
+
+# Plot marriages per capita
+plt.bar(filtered_data['Year'] - 0.2, filtered_data['Marriages_per_1000'], width=0.4, label='Marriages per 1000')
+
+# Plot divorces per capita
+plt.bar(filtered_data['Year'] + 0.2, filtered_data['Divorces_per_1000'], width=0.4, label='Divorces per 1000')
+
+# Add labels and legend
+plt.xlabel('Year')
+plt.ylabel('Number per 1000')
+plt.title('Number of Marriages and Divorces per 1000 in the U.S. (1900, 1950, 2000)')
+plt.xticks(filtered_data['Year'], filtered_data['Year'])  # Set x-axis ticks to match years
+plt.legend()
+
+# Show plot
+plt.grid(axis='y')
+plt.tight_layout()
+plt.show()
+
+
+# # Question 8 
+# HORIZONTAL BAR CHART
+
+# In[14]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Step 1: Import the dataset
+actors_data = pd.read_csv("Dataset_Q8.csv")
+
+# Step 2: Sort the actors by their kill count
+sorted_actors = actors_data.sort_values(by='Count', ascending=True)
+
+# Step 3: Plotting
+plt.figure(figsize=(10, 6))
+
+# Horizontal bar chart
+plt.barh(sorted_actors['Actor'], sorted_actors['Count'], color='skyblue')
+
+# Add labels and title
+plt.xlabel('Kill Count')
+plt.ylabel('Actor')
+plt.title('Deadliest Actors in Hollywood')
+
+# Add labels for each bar
+for index, value in enumerate(sorted_actors['Count']):
+    plt.text(value, index, str(value))
+
+# Show plot
+plt.grid(axis='x')
+plt.tight_layout()
+plt.show()
+
+
+# # Question 9
+# PIE CHART
+
+# In[15]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Step 1: Import the dataset
+emperors_data = pd.read_csv("Dataset_Q9.csv")
+
+# Step 2: Calculate the fraction of assassinated emperors
+total_emperors = len(emperors_data)
+assassinated_emperors = emperors_data[emperors_data['Cause_of_Death'] == 'Assassinated']
+fraction_assassinated = len(assassinated_emperors) / total_emperors
+
+# Step 3: Create the pie chart
+labels = ['Assassinated', 'Non-assassinated']
+sizes = [fraction_assassinated, 1 - fraction_assassinated]
+explode = (0.1, 0)  # explode the first slice (Assassinated)
+
+plt.figure(figsize=(8, 8))
+plt.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%', startangle=140)
+plt.title('Fraction of Assassinated Roman Emperors')
+plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle
+
+# Show plot
+plt.show()
+
+
+# # Question 10 
+# SCATTER PLOT
+
+# In[16]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Step 1: Import the dataset
+data = pd.read_csv("Dataset_Q10.csv")
+
+# Step 2: Extract data for plotting
+years = data['Year']
+revenue = data['Total Arcade Revenue (billions)']
+phd_awarded = data['Computer Science Doctorates Awarded (US)']
+
+# Step 3: Create the scatter plot
+plt.figure(figsize=(10, 6))
+plt.scatter(revenue, phd_awarded, c=years, cmap='viridis', alpha=0.8)
+plt.colorbar(label='Year')
+plt.title('Relationship Between Arcade Revenue and Computer Science PhDs')
+plt.xlabel('Total Arcade Revenue (billions)')
+plt.ylabel('Computer Science Doctorates Awarded (US)')
+plt.grid(True)
+
+# Show plot
+plt.show()
+
